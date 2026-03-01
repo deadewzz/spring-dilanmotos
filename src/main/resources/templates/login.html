@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Iniciar Sesión</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/css/estilo_iniciodesesion.css}">
+</head>
+<body>
+
+<div class="main-container">
+    <section class="form-wrapper-container">
+        <h2 class="form-titulo">Bienvenido</h2>
+        <div class="form-wrapper">
+
+            <!-- Caja de inicio de sesión -->
+            <div class="container login-card">
+                <h2 id="login-title" class="form-titulo">Iniciar sesión</h2>
+
+                <!-- Formulario de login -->
+                <form th:action="@{/login}" method="post">
+                    <div class="mb-3">
+                        <label class="form-label">Correo</label>
+                        <!-- name="correo" para que coincida con SecurityConfig -->
+                        <input type="email" class="form-control" name="correo" placeholder="tucorreo@example.com" required>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Contraseña</label>
+                        <!-- name="contrasena" para que coincida con SecurityConfig -->
+                        <input type="password" class="form-control" name="contrasena" placeholder="********" required>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary">Entrar</button>
+                    <a th:href="@{/register}" class="btn btn-link">Registrarse</a>
+
+                    <div class="signin-aux">
+                        <a th:href="@{/forgot-password}" class="btn btn-link">Olvidé mi contraseña</a>
+                    </div>
+                </form>
+
+                <!-- Mensajes de error y logout -->
+                <div th:if="${param.error}" class="alert alert-danger mt-3">
+                    Credenciales inválidas, intenta nuevamente.
+                </div>
+                <div th:if="${param.logout}" class="alert alert-success mt-3">
+                    Sesión cerrada correctamente.
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dilan Motos - Historial</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" th:href="@{/css/estilo_historialactividad.css}">
+</head>
+
+<body>
+  <div class="main-container">
+    <!-- Encabezado -->
+ <header class="header">
+    <img src="assets/LogoDylanMotosI.png" alt="Dilan Motos" class="logo">
+   <div class="icons">
+  <nav class="main-nav">
+    <span class="money-icon">
+      <img src="assets/simboloPesos.png" alt="Pesos">
+    </span>
+    <div class="user-menu">
+      <span id="userIcon" class="user-icon">
+        <img src="assets/iconoPerfil.png" alt="Perfil">
+      </span>
+      <ul id="dropdown" class="dropdown hidden">  
+        <li><a th:href="CuentaUsuario.html">Mi cuenta</a></li>
+        <li><form th:action="@{/logout}" method="post" style="display:inline; width:100%;">
+            <button type="submit" class="btn btn-link dropdown-logout" style="width:100%; text-align:left; padding: 0.6rem 1rem; color: #fff; text-decoration: none;">Cerrar Sesión</button>
+        </form>
+        </li>
+        <li sec:authorize="hasRole('ADMIN')"><a th:href="@{/usuario}" class="dropdown-admin">Panel de Administración</a></li>
+      </ul>
+    </div>
+  </nav>
+</div>
+  </header>
+
+    <!-- Historial -->
+    <div class="historial-container">
+
+      <div class="historial-header">
+        <div class="fecha-container">
+          <label for="fecha">Seleccione fecha</label>
+          <input type="date" id="fecha" class="form-control">
+        </div>
+        <h3 id="fechaHeader">Jueves, 14 de Agosto de 2025</h3>
+      </div>
+
+      <div class="tabla-historial">
+        <div class="fila">
+          <span>00/00/0000</span>
+          <span>Verbo en pasado - Acción que realizó el usuario</span>
+        </div>
+        <div class="fila">
+          <span>00/00/0000</span>
+          <span>Verbo en pasado - Acción que realizó el usuario</span>
+        </div>
+        <div class="fila">
+          <span>00/00/0000</span>
+          <span>Verbo en pasado - Acción que realizó el usuario</span>
+        </div>
+        <div class="fila">
+          <span>00/00/0000</span>
+          <span>Verbo en pasado - Acción que realizó el usuario</span>
+        </div>
+        <div class="fila">
+          <span>00/00/0000</span>
+          <span>Verbo en pasado - Acción que realizó el usuario</span>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Botones -->
+     <div class="footer">
+        <button class="btn borrar">Borrar historial</button>
+        <button onclick="history.back()" class="btn">Atrás</button>
+     </div>
+
+  <script>
+    // Script para alternar el menú
+    document.getElementById("userIcon").addEventListener("click", function() {
+      document.getElementById("dropdown").classList.toggle("hidden");
+    });
+
+    // Cierra el menú si se hace clic fuera
+    window.addEventListener("click", function(e) {
+      if (!document.querySelector(".user-menu").contains(e.target)) {
+        document.getElementById("dropdown").classList.add("hidden");
+      }
+    });
+
+    // Mostrar calendario y actualizar encabezado
+    (function() {
+      var fechaInput = document.getElementById('fecha');
+      var header = document.getElementById('fechaHeader');
+
+      function formatSpanish(dateStr) {
+        if (!dateStr) return '';
+        // Parse as local date components to avoid UTC timezone shift
+        var parts = dateStr.split('-'); // [yyyy, mm, dd]
+        if (parts.length !== 3) return '';
+        var y = parseInt(parts[0], 10);
+        var m = parseInt(parts[1], 10) - 1;
+        var d = parseInt(parts[2], 10);
+        var dateObj = new Date(y, m, d);
+        if (isNaN(dateObj)) return '';
+        var fmt = new Intl.DateTimeFormat('es-ES', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
+        var s = fmt.format(dateObj);
+        return s.charAt(0).toUpperCase() + s.slice(1);
+      }
+
+      // Use local today as default value (YYYY-MM-DD)
+      function localTodayISO() {
+        var t = new Date();
+        var pad = function(n){ return n < 10 ? '0' + n : n; };
+        return t.getFullYear() + '-' + pad(t.getMonth() + 1) + '-' + pad(t.getDate());
+      }
+
+      if (fechaInput) {
+        var defaultDate = localTodayISO();
+        fechaInput.value = defaultDate;
+        if (header) header.textContent = formatSpanish(fechaInput.value);
+
+        fechaInput.addEventListener('change', function() {
+          if (header) header.textContent = formatSpanish(this.value);
+        });
+      }
+    })();
+  </script>
+</body>
+</html>

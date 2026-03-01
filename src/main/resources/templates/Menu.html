@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Menú lateral</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .sidebar {
+            width: 250px;
+            background-color: #f8f9fa;
+            padding-top: 1rem;
+            border-right: 1px solid #dee2e6;
+            min-height: 100vh;
+        }
+        .sidebar .nav-link {
+            color: #333;
+            padding: 10px 20px;
+        }
+        .sidebar .nav-link:hover {
+            background-color: #e9ecef;
+        }
+        .sidebar .nav-link.active {
+            font-weight: bold;
+            background-color: #dee2e6;
+        }
+    </style>
+</head>
+<body>
+
+<!-- Fragmento Thymeleaf -->
+<div class="sidebar" th:fragment="sidebar">
+    <h1 class="px-3">Dilan Motos</h1>
+    <ul class="nav flex-column">
+
+        <!-- Módulo Usuarios -->
+        <li class="nav-item">
+          <a class="nav-link collapsed" href="#submenuUsuarios" data-bs-toggle="collapse" aria-expanded="false">
+            <i class="fa-solid fa-user me-2"></i> Modulo usuarios
+          </a>
+          <div class="collapse" id="submenuUsuarios">
+            <ul class="nav flex-column ms-3">
+              <li><a class="nav-link" href="/usuario"><i class="fa-solid fa-user me-2"></i> Gestión de Usuarios</a></li>
+              <li><a class="nav-link" href="/cotizacion"><i class="fa-solid fa-file-invoice-dollar me-2"></i> Cotización</a></li>
+              <li><a class="nav-link" href="/productos"><i class="fa-solid fa-box-open me-2"></i> Productos</a></li>
+            </ul>
+          </div>
+        </li>
+
+        <!-- Módulo Motos -->
+        <li class="nav-item">
+          <a class="nav-link collapsed" href="#submenuMotos" data-bs-toggle="collapse" aria-expanded="false">
+            <i class="fa-solid fa-motorcycle me-2"></i> Modulo Motos
+          </a>
+          <div class="collapse" id="submenuMotos">
+            <ul class="nav flex-column ms-3">
+              <li><a class="nav-link" href="/marca"><i class="fa-solid fa-tag me-2"></i> Marca</a></li>
+              <li><a class="nav-link" href="/moto"><i class="fa-solid fa-motorcycle me-2"></i> Moto</a></li>
+              <li><a class="nav-link" href="/caracteristicas"><i class="fa-solid fa-list me-2"></i> Características</a></li>
+            </ul>
+          </div>
+        </li>
+
+        <!-- Módulo Mecánico -->
+        <li class="nav-item">
+          <a class="nav-link collapsed" href="#submenuMecanico" data-bs-toggle="collapse" aria-expanded="false">
+            <i class="fa-solid fa-user-gear me-2"></i> Modulo Mecánico
+          </a>
+          <div class="collapse" id="submenuMecanico">
+            <ul class="nav flex-column ms-3">
+              <li><a class="nav-link" href="/mecanico"><i class="fa-solid fa-user-gear me-2"></i> Mecánico</a></li>
+              <li><a class="nav-link" href="/tipoServicio"><i class="fa-solid fa-screwdriver-wrench me-2"></i> Tipo de Servicio</a></li>
+              <li><a class="nav-link" href="/servicio"><i class="fa-solid fa-clipboard-check me-2"></i> Servicio</a></li>
+            </ul>
+          </div>
+        </li>
+
+        <!-- Módulo PQRS -->
+        <li class="nav-item">
+          <a class="nav-link collapsed" href="#submenuPQRS" data-bs-toggle="collapse" aria-expanded="false">
+            <i class="fa-solid fa-envelope-open-text me-2"></i> Gestión de sugerencias
+          </a>
+          <div class="collapse" id="submenuPQRS">
+            <ul class="nav flex-column ms-3">
+              <li><a class="nav-link" href="/historial"><i class="fa-solid fa-clock-rotate-left me-2"></i> Historial</a></li>
+              <li><a class="nav-link" href="/pqrs"><i class="fa-solid fa-envelope-open-text me-2"></i> PQRS</a></li>
+            </ul>
+          </div>
+        </li>
+
+        <!-- Categoría -->
+        <li class="nav-item">
+          <a class="nav-link" href="/categoria"><i class="fa-solid fa-folder-open me-2"></i> Categoría</a>
+        </li>
+
+        <!-- Logout -->
+        <li class="nav-item px-3 mt-4">
+          <form th:action="@{/logout}" method="post">
+              <button type="submit" class="btn btn-danger w-100">
+                  <i class="fa-solid fa-right-from-bracket me-2"></i> Cerrar Sesión 
+              </button>
+          </form>
+        </li>
+        <li class="nav-item px-3 mt-4">
+    <a th:href="@{/dashboard}" class="btn btn-success">
+        <i class="fa-solid fa-right-from-bracket me-2"></i> Volver 
+    </a>
+</li>
+    </ul>
+</div>
+
+<!--  JS necesario para collapse -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title th:text="'Cuenta de ' + ${usuario.nombre}">Mi cuenta</title>
+  <!-- Bootstrap -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" th:href="@{/css/estilo_cuentausuario.css}">
+</head>
+<body>
+ <div class="container py-4">
+    <h1 class="mb-4">Mi cuenta</h1>
+
+    <!-- Datos personales -->
+    <h2>Datos personales</h2>
+    <div class="profile-section d-flex align-items-center mb-4">
+      <img th:src="@{/assets/iconoPerfil.png}" alt="icono perfil" class="me-3 rounded-circle" width="100">
+      <div class="personal-info">    
+        <p><strong>Nombre:</strong> <span th:text="${usuario.nombre}">Nombre</span></p>
+        <p><strong>Correo:</strong> <span th:text="${usuario.correo}">Correo</span></p>
+        <p><strong>Rol:</strong> <span th:text="${usuario.rol}">Rol</span></p>
+        <p><strong>Estado:</strong>
+          <span th:if="${usuario.habilitado}">Habilitado</span>
+          <span th:unless="${usuario.habilitado}">Deshabilitado</span>
+        </p>
+      </div>
+    </div>
+
+    <!-- Datos de la moto -->
+    <h2>Mi Moto</h2>
+    <div th:each="moto : ${usuario.motos}">
+        <p><strong>Marca:</strong> <span th:text="${moto.marca.nombre}">Marca</span></p>
+        <p><strong>Modelo:</strong> <span th:text="${moto.modelo}">Modelo</span></p>
+        <p><strong>Cilindraje:</strong> <span th:text="${moto.cilindraje}">Cilindraje</span></p>
+        <p><strong>Tipo de reparación:</strong> <span th:text="${moto.tipoReparacion}">Tipo</span></p>
+    </div>
+ </div>
+</body>
+</html>
