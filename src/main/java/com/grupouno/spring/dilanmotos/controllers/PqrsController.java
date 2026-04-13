@@ -52,6 +52,7 @@ public class PqrsController {
 
         model.addAttribute("pqrs", pqrs);
         model.addAttribute("nuevoPqrs", new PQRS());
+        // int fallaIntencional = 1 / 0; // Para probar el error 500
         return "pqrs_menu";
     }
 
