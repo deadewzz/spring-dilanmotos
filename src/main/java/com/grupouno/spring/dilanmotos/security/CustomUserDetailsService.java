@@ -14,13 +14,6 @@ import org.springframework.stereotype.Service;
  * <p>Implementa {@link UserDetailsService} para que Spring Security
  * pueda autenticar usuarios usando su correo electrónico como nombre de usuario.</p>
  *
- * <p>Características principales:</p>
- * <ul>
- *   <li>Busca usuarios por correo en la base de datos.</li>
- *   <li>Construye un objeto {@link UserDetails} con correo, contraseña encriptada y rol.</li>
- *   <li>Marca al usuario como deshabilitado si el campo <b>habilitado</b> es falso.</li>
- * </ul>
- *
  * @author Neyder Estiben Manrique Alvarez
  * @version 1.0
  */
@@ -39,10 +32,12 @@ public class CustomUserDetailsService implements UserDetailsService {
                 .orElseThrow(() -> new UsernameNotFoundException("Usuario no encontrado: " + correo));
 
         return User.builder()
-                .username(usuario.getCorreo())                 // correo como username
-                .password(usuario.getContrasena())             // contraseña encriptada con BCrypt
+                .username(usuario.getCorreo())                 
+                .password(usuario.getContrasena())             
+                
                 .roles(usuario.getRol() != null ? usuario.getRol() : "USER")
-                .disabled(!usuario.isHabilitado())             // deshabilitado si habilitado = false
+                
+                .disabled(!usuario.isHabilitado())        
                 .build();
     }
 }

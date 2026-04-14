@@ -39,7 +39,7 @@
                         </li>
                         <!-- Solo visible para ADMIN -->
                         <li sec:authorize="hasRole('ADMIN')">
-                            <a th:href="@{/usuario}" class="dropdown-admin">Panel de Administración</a>
+                            <a th:href="@{/admin/usuario}" class="dropdown-admin">Panel de Administración</a>
                         </li>
                     </ul>
                 </div>

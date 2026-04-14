@@ -15,7 +15,7 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         return http
-            .csrf(csrf -> csrf.disable()) // Recomendado deshabilitar mientras desarrollas
+            .csrf(csrf -> csrf.disable()) 
             .authorizeHttpRequests(auth -> auth
                 
                 // 1. RUTAS PÚBLICAS Y DE ERROR
@@ -24,9 +24,8 @@ public class SecurityConfig {
                     "/verify-code", "/reset-password", "/css/**", "/js/**", "/error/**"
                 ).permitAll()
                 
-                // 2. LA MAGIA DEL PREFIJO: Todo lo que empiece con /admin/ requiere ser ADMIN
-                // Usamos hasAuthority para que coincida exactamente con tu base de datos
-                .requestMatchers("/admin/**").hasAuthority("ADMIN")
+                // 2. MÓDULOS DE ADMINISTRACIÓN (Sincronizado con hasRole)
+                .requestMatchers("/admin/**").hasRole("ADMIN")
                 
                 // 3. RUTAS PROTEGIDAS GENERALES (Para usuarios normales)
                 .requestMatchers("/CuentaUsuario", "/dashboard").authenticated()
