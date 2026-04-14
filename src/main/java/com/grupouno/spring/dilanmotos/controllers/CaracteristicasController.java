@@ -4,8 +4,6 @@ import com.grupouno.spring.dilanmotos.models.Caracteristicas;
 import com.grupouno.spring.dilanmotos.models.Moto;
 import com.grupouno.spring.dilanmotos.repositories.CaracteristicasRepository;
 import com.grupouno.spring.dilanmotos.repositories.MotoRepository;
-import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.lang.NonNull;
@@ -17,12 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @Controller
-<<<<<<< HEAD
 @RequestMapping("/admin/caracteristicas")
-=======
-@RequestMapping("/caracteristicas")
-@Tag(name = "Características", description = "Gestión de especificaciones técnicas vinculadas a las motos")
->>>>>>> origin/Modulo-Andres
 public class CaracteristicasController {
 
     @Autowired
@@ -31,7 +24,6 @@ public class CaracteristicasController {
     @Autowired
     private MotoRepository motoRepository;
 
-    @Operation(summary = "Listar características", description = "Muestra todas las características técnicas registradas, con opción de búsqueda por descripción.")
     @GetMapping
     public String mostrarCaracteristicas(@RequestParam(value = "search", required = false) String search, Model model) {
         List<Caracteristicas> resultados = (search != null && !search.isEmpty())
@@ -44,7 +36,6 @@ public class CaracteristicasController {
         return "caracteristicas";
     }
 
-    @Operation(summary = "Guardar característica", description = "Crea una nueva especificación técnica y la vincula a una moto específica mediante su ID.")
     @PostMapping
     public String guardarCaracteristica(
             @Valid @NonNull @ModelAttribute("nuevaCaracteristica") Caracteristicas caracteristica,
@@ -65,13 +56,7 @@ public class CaracteristicasController {
         return "redirect:/admin/caracteristicas?creado";
     }
 
-<<<<<<< HEAD
-    // Mostrar formulario de edición
-    @GetMapping("/admin/caracteristicas/editar/{id}")
-=======
-    @Operation(summary = "Editar característica", description = "Recupera los datos de una característica para su edición en el formulario.")
     @GetMapping("/editar/{id}")
->>>>>>> origin/Modulo-Andres
     public String editarCaracteristica(@PathVariable("id") int id, Model model) {
         return caracteristicasRepository.findById(id)
                 .map(caracteristica -> {
@@ -82,13 +67,7 @@ public class CaracteristicasController {
                 .orElse("redirect:/admin/caracteristicas?error=not_found");
     }
 
-<<<<<<< HEAD
-    // Actualizar característica
-    @PostMapping("/admin/caracteristicas/actualizar")
-=======
-    @Operation(summary = "Actualizar característica", description = "Actualiza la descripción o la moto vinculada de una característica existente.")
     @PostMapping("/actualizar")
->>>>>>> origin/Modulo-Andres
     public String actualizarCaracteristica(
             @Valid @NonNull @ModelAttribute("caracteristicaEditada") Caracteristicas caracteristica,
             BindingResult result,
@@ -105,13 +84,7 @@ public class CaracteristicasController {
         return "redirect:/admin/caracteristicas?actualizado";
     }
 
-<<<<<<< HEAD
-    // Eliminar característica
-    @GetMapping("/admin/caracteristicas/eliminar/{id}")
-=======
-    @Operation(summary = "Eliminar característica", description = "Elimina físicamente el registro de la característica técnica por ID.")
     @GetMapping("/eliminar/{id}")
->>>>>>> origin/Modulo-Andres
     public String eliminarCaracteristica(@PathVariable("id") int id) {
         if (caracteristicasRepository.existsById(id)) {
             caracteristicasRepository.deleteById(id);
