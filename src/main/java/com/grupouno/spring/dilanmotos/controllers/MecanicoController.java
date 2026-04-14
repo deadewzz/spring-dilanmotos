@@ -10,27 +10,29 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import org.springframework.lang.NonNull;
+
 @Controller
 @RequestMapping("/admin/mecanico")
 public class MecanicoController {
 
     @Autowired
-    private MecanicoRepository mecanicoRepository; 
+    private MecanicoRepository mecanicoRepository;
 
-    @GetMapping("/admin/mecanico")
+    @GetMapping
     public String mostrarMecanicos(@RequestParam(value = "search", required = false) String search, Model model) {
-    List<Mecanico> mecanico = (search != null && !search.isEmpty())
-         
-            ? mecanicoRepository.findByNombreContainingIgnoreCase(search)
-            : mecanicoRepository.findAll();
+        List<Mecanico> mecanico = (search != null && !search.isEmpty())
 
-    model.addAttribute("mecanicos", mecanico);
-    model.addAttribute("nuevoMecanico", new Mecanico());
-    return "mecanico";
+                ? mecanicoRepository.findByNombreContainingIgnoreCase(search)
+                : mecanicoRepository.findAll();
+
+        model.addAttribute("mecanicos", mecanico);
+        model.addAttribute("nuevoMecanico", new Mecanico());
+        return "mecanico";
     }
 
-    @PostMapping("/admin/mecanico")
-    public String guardarMecanico(@NonNull @Valid @ModelAttribute("nuevoMecanico") Mecanico mecanico, BindingResult result, Model model) {
+    @PostMapping
+    public String guardarMecanico(@NonNull @Valid @ModelAttribute("nuevoMecanico") Mecanico mecanico,
+            BindingResult result, Model model) {
         if (result.hasErrors()) {
             model.addAttribute("mecanico", mecanicoRepository.findAll());
             return "mecanico";
@@ -39,15 +41,16 @@ public class MecanicoController {
         return "redirect:/admin/mecanico";
     }
 
-    @GetMapping("/admin/mecanico/editar/{id}")
+    @GetMapping("/editar/{id}")
     public String editarMecanico(@PathVariable("id") int id, Model model) {
         Mecanico mecanico = mecanicoRepository.findById(id).orElse(null);
         model.addAttribute("mecanicoEditado", mecanico);
         return "editar_mecanico";
     }
 
-    @PostMapping("/admin/mecanico/actualizar")
-    public String actualizarMecanico(@NonNull @Valid @ModelAttribute("mecanicoEditado") Mecanico mecanico, BindingResult result) {
+    @PostMapping("/actualizar")
+    public String actualizarMecanico(@NonNull @Valid @ModelAttribute("mecanicoEditado") Mecanico mecanico,
+            BindingResult result) {
         if (result.hasErrors()) {
             return "editar_mecanico";
         }
@@ -55,7 +58,7 @@ public class MecanicoController {
         return "redirect:/admin/mecanico";
     }
 
-    @GetMapping("/admin/mecanico/eliminar/{id}")
+    @GetMapping("/eliminar/{id}")
     public String eliminarMecanico(@PathVariable("id") int id) {
         mecanicoRepository.deleteById(id);
         return "redirect:/admin/mecanico";

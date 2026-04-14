@@ -20,24 +20,22 @@ public class CategoriaController {
 
     // Mostrar listado y formulario
 
-
-    @GetMapping("/admin/categoria")
+    @GetMapping
     public String mostrarCategorias(@RequestParam(value = "search", required = false) String search, Model model) {
         List<Categoria> categorias = (search != null && !search.isEmpty())
-            ? categoriaRepository.findByNombreContainingIgnoreCase(search)
-            : categoriaRepository.findAll();
+                ? categoriaRepository.findByNombreContainingIgnoreCase(search)
+                : categoriaRepository.findAll();
 
         model.addAttribute("categorias", categorias);
         model.addAttribute("nuevaCategoria", new Categoria());
         return "categoria";
     }
 
-     @PostMapping("/admin/categoria")
+    @PostMapping
     public String guardarCategoria(
-        @Valid @NonNull @ModelAttribute("nuevaCategoria") Categoria categoria,
-        BindingResult result,
-        Model model
-    ) {
+            @Valid @NonNull @ModelAttribute("nuevaCategoria") Categoria categoria,
+            BindingResult result,
+            Model model) {
         if (result.hasErrors()) {
             model.addAttribute("categorias", categoriaRepository.findAll());
             return "categoria";
@@ -47,20 +45,18 @@ public class CategoriaController {
         return "redirect:/admin/categoria?creado";
     }
 
-     @GetMapping("/admin/categoria/editar/{id}")
+    @GetMapping("/editar/{id}")
     public String editarMecanico(@PathVariable("id") int id, Model model) {
         Categoria categoria = categoriaRepository.findById(id).orElse(null);
         model.addAttribute("categoriaEditada", categoria);
         return "editar_categoria";
     }
 
-
-    //Actualizar las categorías
-    @PostMapping("/admin/categoria/actualizar")
+    // Actualizar las categorías
+    @PostMapping("/actualizar")
     public String actualizarCategoria(
-        @Valid @NonNull @ModelAttribute("categoriaEditada") Categoria categoria,
-        BindingResult result
-    ) {
+            @Valid @NonNull @ModelAttribute("categoriaEditada") Categoria categoria,
+            BindingResult result) {
         if (result.hasErrors()) {
             return "editar_categoria";
         }
@@ -70,7 +66,7 @@ public class CategoriaController {
     }
 
     // Eliminar categoría
-    @GetMapping("/admin/categoria/eliminar/{id}")
+    @GetMapping("/eliminar/{id}")
     public String eliminarCategoria(@PathVariable("id") int id) {
         if (categoriaRepository.existsById(id)) {
             categoriaRepository.deleteById(id);
@@ -78,6 +74,5 @@ public class CategoriaController {
         }
         return "redirect:/admin/categoria?error=not_found";
     }
-
 
 }

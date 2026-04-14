@@ -22,15 +22,15 @@ public class MotoController {
     private final MarcaRepository marcaRepository;
 
     public MotoController(MotoRepository motoRepository,
-                          UsuarioRepository usuarioRepository,
-                          MarcaRepository marcaRepository) {
+            UsuarioRepository usuarioRepository,
+            MarcaRepository marcaRepository) {
         this.motoRepository = motoRepository;
         this.usuarioRepository = usuarioRepository;
         this.marcaRepository = marcaRepository;
     }
 
     // --- LISTADO DE MOTOS ---
-    @GetMapping("/admin/moto")
+    @GetMapping
     public String listarMotos(Model model) {
         List<Moto> motos = motoRepository.findAll();
         model.addAttribute("motos", motos);
@@ -46,7 +46,7 @@ public class MotoController {
     }
 
     // --- BUSCAR POR MODELO ---
-    @GetMapping("/admin/moto/buscar")
+    @GetMapping("/buscar")
     public String buscarPorModelo(@RequestParam("modelo") String modelo, Model model, Authentication auth) {
         String correo = auth.getName();
         Usuarios usuario = usuarioRepository.findByCorreo(correo).orElseThrow();
@@ -63,10 +63,10 @@ public class MotoController {
     }
 
     // --- REGISTRAR MOTO ---
-    @PostMapping("/admin/moto")
+    @PostMapping
     public String registrarMoto(@ModelAttribute("nuevaMoto") Moto nuevaMoto,
-                                @RequestParam("idMarca") Integer idMarca,
-                                Authentication auth) {
+            @RequestParam("idMarca") Integer idMarca,
+            Authentication auth) {
         String correo = auth.getName();
         Usuarios usuario = usuarioRepository.findByCorreo(correo).orElseThrow();
 
@@ -81,7 +81,7 @@ public class MotoController {
     }
 
     // --- EDITAR MOTO ---
-    @GetMapping("/admin/moto/editar/{id}")
+    @GetMapping("/editar/{id}")
     public String editarMoto(@PathVariable("id") Integer idMoto, Model model) {
         Moto moto = motoRepository.findById(idMoto).orElseThrow();
 
@@ -92,9 +92,9 @@ public class MotoController {
         return "editar_moto";
     }
 
-    @PostMapping("/admin/moto/actualizar")
+    @PostMapping("/actualizar")
     public String actualizarMoto(@ModelAttribute("motoEditada") Moto motoEditada,
-                                 @RequestParam("idMarca") Integer idMarca) {
+            @RequestParam("idMarca") Integer idMarca) {
         Marca marca = marcaRepository.findById(idMarca).orElseThrow();
         motoEditada.setMarca(marca);
 
@@ -103,7 +103,7 @@ public class MotoController {
     }
 
     // --- ELIMINAR MOTO ---
-    @GetMapping("/admin/moto/eliminar/{id}")
+    @GetMapping("/eliminar/{id}")
     public String eliminarMoto(@PathVariable("id") Integer idMoto) {
         motoRepository.deleteById(idMoto);
         return "redirect:/admin/moto?eliminado=true";

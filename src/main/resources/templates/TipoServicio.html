@@ -46,7 +46,7 @@
     <div th:if="${param.eliminado}" class="alert alert-warning">Tipo de servicio eliminado.</div>
 
     <!-- Formulario de búsqueda -->
-    <form th:action="@{/tipoServicio}" method="get">
+    <form th:action="@{/admin/tipoServicio}" method="get">
         <div class="row g-2 align-items-center mb-3">
             <div class="col-md-6">
                 <div class="input-group">
@@ -59,13 +59,13 @@
             </div>
             <div class="col-md-6 text-end">
                 <button type="submit" class="btn btn-info"><i class="fa-solid fa-search"></i> Buscar</button>
-                <a th:href="@{/tipoServicio}" class="btn btn-warning"><i class="fa-solid fa-list"></i> Reset</a>
+                <a th:href="@{/admin/tipoServicio}" class="btn btn-warning"><i class="fa-solid fa-list"></i> Reset</a>
             </div>
         </div>
     </form>
 
     <!-- Formulario para agregar tipos de servicios -->
-    <form th:action="@{/tipoServicio}" th:object="${nuevoTipoServicio}" method="post" class="mb-4">
+    <form th:action="@{/admin/tipoServicio}" th:object="${nuevoTipoServicio}" method="post" class="mb-4">
         <div class="row g-3">
             <div class="col-md-4">
                 <label class="form-label">Nombre</label>

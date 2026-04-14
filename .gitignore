@@ -31,3 +31,7 @@ build/
 
 ### VS Code ###
 .vscode/
+
+### PYTHON ###
+replace_html.py
+update_editar.py

@@ -1,73 +1,75 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
   <meta charset="UTF-8">
   <title>Dilan Motos - Catálogo autenticados</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" th:href="@{/css/estilo_catalogoautenticado.css}">
+  <link rel="stylesheet" th:href="@{/css/estilo_catalogoautenticado.css}">
 </head>
+
 <body>
   <!-- Header -->
-   <header class="header">
-        <img src="/assets/LogoDylanMotosI.png" alt="Dilan Motos" class="logo">
-        <div class="search-bar">
-            <input type="text" placeholder="Buscar">
-        </div>
+  <header class="header">
+    <img src="/assets/LogoDylanMotosI.png" alt="Dilan Motos" class="logo">
+    <div class="search-bar">
+      <input type="text" placeholder="Buscar">
+    </div>
 
-        <div class="icons">
-            <nav class="main-nav">
-              <span class="money-icon">
-                <a th:href="@{/pantallaCotizacion}">
-                  <img src="/assets/simboloPesos.png" alt="Pesos">
-                </a>
-              </span>
-                <div class="user-menu">
-                    <span id="userIcon" class="user-icon">
-                        <img src="/assets/iconoPerfil.png" alt="Perfil">
-                    </span>
-                    <ul id="dropdown" class="dropdown hidden">  
-                        <li><a th:href="@{/CuentaUsuario}">Mi cuenta</a></li>
-                        <li>
-                            <form th:action="@{/logout}" method="post" style="display:inline; width:100%;">
-                                <button type="submit" class="btn btn-link dropdown-logout"
-                                        style="width:100%; text-align:left; padding:0.6rem 1rem; color:#fff; text-decoration:none;">
-                                    Cerrar Sesión
-                                </button>
-                            </form>
-                        </li>
-                        <!-- Solo visible para ADMIN -->
-                        <li sec:authorize="hasRole('ADMIN')">
-                            <a th:href="@{/usuario}" class="dropdown-admin">Panel de Administración</a>
-                        </li>
-                    </ul>
-                </div>
-            </nav>
+    <div class="icons">
+      <nav class="main-nav">
+        <span class="money-icon">
+          <a th:href="@{/pantallaCotizacion}">
+            <img src="/assets/simboloPesos.png" alt="Pesos">
+          </a>
+        </span>
+        <div class="user-menu">
+          <span id="userIcon" class="user-icon">
+            <img src="/assets/iconoPerfil.png" alt="Perfil">
+          </span>
+          <ul id="dropdown" class="dropdown hidden">
+            <li><a th:href="@{/CuentaUsuario}">Mi cuenta</a></li>
+            <li>
+              <form th:action="@{/logout}" method="post" style="display:inline; width:100%;">
+                <button type="submit" class="btn btn-link dropdown-logout"
+                  style="width:100%; text-align:left; padding:0.6rem 1rem; color:#fff; text-decoration:none;">
+                  Cerrar Sesión
+                </button>
+              </form>
+            </li>
+            <!-- Solo visible para ADMIN -->
+            <li sec:authorize="hasRole('ADMIN')">
+              <a th:href="@{/admin/usuario}" class="dropdown-admin">Panel de Administración</a>
+            </li>
+          </ul>
         </div>
-    </header>
+      </nav>
+    </div>
+  </header>
 
   <!-- Contenido principal -->
   <div class="main-content">
     <!-- Filtros -->
-     <div class="filters">
+    <div class="filters">
       <nav>
         <a th:href="@{/dashboard}">Inicio</a>
         <a th:href="@{/recomendacion}">Recomendaciones</a>
       </nav>
       <div class="filter-buttons">
-          <ul class="topmenu">
-            <li>
-              <button>Marca</button>
-              <ul>
-               <li><a href="FiltroKITCasarella.html">Casarella</a></li>
-                <li><a href="FiltroKITCoho.html">Choho</a></li>
-                <li><a href="CatalogoKitArrastreAutenticado.html">Todas</a></li>
-              </ul>
-            </li>
-          </ul>
-         <a th:href="@{/ComparacionProductos}" class="btn-accion">Comparar</a>
-         <a th:href="@{/Reseñas}" class="btn-accion">Reseñas</a>
-        </div>
+        <ul class="topmenu">
+          <li>
+            <button>Marca</button>
+            <ul>
+              <li><a href="FiltroKITCasarella.html">Casarella</a></li>
+              <li><a href="FiltroKITCoho.html">Choho</a></li>
+              <li><a href="CatalogoKitArrastreAutenticado.html">Todas</a></li>
+            </ul>
+          </li>
+        </ul>
+        <a th:href="@{/ComparacionProductos}" class="btn-accion">Comparar</a>
+        <a th:href="@{/Reseñas}" class="btn-accion">Reseñas</a>
+      </div>
     </div>
 
     <!-- Lista de Productos -->
@@ -75,17 +77,17 @@
       <div class="product-card">
         <div class="select-circle" onclick="toggleSelect(this)">✔</div>
         <img src="assets/ACEITE_LIQUI_MOLY.png" alt="Kit de arrastre">
-       <a href="Ficha_tecnica_Kit_arrastre.html" class="btn-accion">Ficha técnica</a>
+        <a href="Ficha_tecnica_Kit_arrastre.html" class="btn-accion">Ficha técnica</a>
       </div>
       <div class="product-card">
         <div class="select-circle" onclick="toggleSelect(this)">✔</div>
         <img src="assets/AceiteMobil.png" alt="Kit de arrastre">
-       <a href="Ficha_tecnica_Kit_arrastre.html" class="btn-accion">Ficha técnica</a>
+        <a href="Ficha_tecnica_Kit_arrastre.html" class="btn-accion">Ficha técnica</a>
       </div>
       <div class="product-card">
         <div class="select-circle" onclick="toggleSelect(this)">✔</div>
         <img src="assets/AceiteMotul.png" alt="Kit de arrastre">
-       <a href="Ficha_tecnica_Kit_arrastre.html" class="btn-accion">Ficha técnica</a>
+        <a href="Ficha_tecnica_Kit_arrastre.html" class="btn-accion">Ficha técnica</a>
       </div>
       <div class="product-card">
         <div class="select-circle" onclick="toggleSelect(this)">✔</div>
@@ -96,18 +98,18 @@
   </div>
 
   <!-- Botones de acción abajo -->
-   <div class="footer">
-  <div class="actions">
-    <div class="left">
-     <button onclick="history.back()" class="btn-accion">Atrás</button>
+  <div class="footer">
+    <div class="actions">
+      <div class="left">
+        <button onclick="history.back()" class="btn-accion">Atrás</button>
+      </div>
+      <div>
+        <a th:href="@{/ComunicacionTec}" class="btn-accion">Comunicate con un técnico</a>
+      </div>
+      <div class="right">
+        <button onclick="desmarcarProductos()" class="btn-accion">Desmarcar productos</button>
+      </div>
     </div>
-    <div>
-    <a th:href="@{/ComunicacionTec}" class="btn-accion">Comunicate con un técnico</a>
-    </div>
-    <div class="right">
-      <button onclick="desmarcarProductos()" class="btn-accion">Desmarcar productos</button>
-    </div>
-  </div>
   </div>
   <!-- Script para seleccionar check -->
   <script>
@@ -115,12 +117,12 @@
       circle.classList.toggle('selected');
     }
     // Script para alternar el menú
-    document.getElementById("userIcon").addEventListener("click", function() {
+    document.getElementById("userIcon").addEventListener("click", function () {
       document.getElementById("dropdown").classList.toggle("hidden");
     });
 
     // Cierra el menú si se hace clic fuera
-    window.addEventListener("click", function(e) {
+    window.addEventListener("click", function (e) {
       if (!document.querySelector(".user-menu").contains(e.target)) {
         document.getElementById("dropdown").classList.add("hidden");
       }
@@ -128,10 +130,11 @@
 
     // Función para limpiar productos seleccionados
     function desmarcarProductos() {
-    const selects = document.querySelectorAll(".select-circle");
-    selects.forEach(s => s.classList.remove("selected"));
+      const selects = document.querySelectorAll(".select-circle");
+      selects.forEach(s => s.classList.remove("selected"));
     }
   </script>
 
 </body>
+
 </html>

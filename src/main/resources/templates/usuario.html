@@ -50,7 +50,7 @@
     <div th:if="${param.eliminado}" class="alert alert-warning">Usuario eliminado.</div>
 
     <!-- Formulario de búsqueda -->
-    <form th:action="@{/usuario}" method="get" class="mb-3">
+    <form th:action="@{/admin/usuario}" method="get" class="mb-3">
         <div class="row g-2 align-items-center">
             <div class="col-md-6">
                 <div class="input-group">
@@ -60,13 +60,13 @@
             </div>
             <div class="col-md-6 text-end">
                 <button type="submit" class="btn btn-info"><i class="fa-solid fa-search"></i> Buscar</button>
-                <a th:href="@{/usuario}" class="btn btn-warning"><i class="fa-solid fa-list"></i> Reset</a>
+                <a th:href="@{/admin/usuario}" class="btn btn-warning"><i class="fa-solid fa-list"></i> Reset</a>
             </div>
         </div>
     </form>
 
     <!-- Formulario para agregar usuario -->
-    <form th:action="@{/usuario}" th:object="${nuevoUsuario}" method="post" class="mb-4">
+    <form th:action="@{/admin/usuario}" th:object="${nuevoUsuario}" method="post" class="mb-4">
         <div class="row g-3">
             <div class="col-md-4">
                 <label class="form-label">Nombre</label>
@@ -108,10 +108,10 @@
                     <td th:text="${usuario.correo}"></td>
                     <td th:text="${usuario.contrasena}"></td>
                     <td>
-                        <a th:href="@{'/usuario/editar/' + ${usuario.idUsuario}}" class="btn btn-success btn-sm">
+                        <a th:href="@{/admin/usuario/editar/{id}(id=${usuario.idUsuario})}" class="btn btn-success btn-sm">
                             <i class="fa-solid fa-pen-to-square"></i> Editar
                         </a>
-                        <a th:href="@{'/usuario/eliminar/' + ${usuario.idUsuario}}" class="btn btn-danger btn-sm"
+                        <a th:href="@{/admin/usuario/eliminar/{id}(id=${usuario.idUsuario})}" class="btn btn-danger btn-sm"
                            onclick="return confirm('¿Estás seguro de que deseas eliminar este usuario?');">
                             <i class="fa-solid fa-trash"></i> Eliminar
                         </a>

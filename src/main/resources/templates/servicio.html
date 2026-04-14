@@ -27,7 +27,7 @@
     <div th:if="${eliminado}" class="alert alert-danger">¡Servicio eliminado exitosamente!</div>
 
     <!-- Buscador -->
-    <form th:action="@{/servicio}" method="get" class="mb-3">
+    <form th:action="@{/admin/servicio}" method="get" class="mb-3">
         <div class="row g-2 align-items-center">
             <div class="col-md-6">
                 <div class="input-group">
@@ -37,7 +37,7 @@
             </div>
             <div class="col-md-6 text-end">
                 <button type="submit" class="btn btn-info"><i class="fa-solid fa-search"></i> Buscar</button>
-                <a th:href="@{/servicio}" class="btn btn-warning"><i class="fa-solid fa-list"></i> Reset</a>
+                <a th:href="@{/admin/servicio}" class="btn btn-warning"><i class="fa-solid fa-list"></i> Reset</a>
             </div>
         </div>
     </form>
@@ -68,10 +68,10 @@
                 <td th:text="${servicio.comentario}"></td>
                 <td><span th:text="${servicio.visibleEnHistorial ? 'Sí' : 'No'}"></span></td>
                 <td>
-                    <a th:href="@{/servicio/editar/{id}(id=${servicio.idServicio})}" class="btn btn-sm btn-warning">
+                    <a th:href="@{/admin/servicio/editar/{id}(id=${servicio.idServicio})}" class="btn btn-sm btn-warning">
                         <i class="fa-solid fa-pen-to-square"></i> Editar
                     </a>
-                    <a th:href="@{/servicio/eliminar/{id}(id=${servicio.idServicio})}" class="btn btn-sm btn-danger"
+                    <a th:href="@{/admin/servicio/eliminar/{id}(id=${servicio.idServicio})}" class="btn btn-sm btn-danger"
                        onclick="return confirm('¿Seguro que deseas eliminar este servicio?')">
                         <i class="fa-solid fa-trash"></i> Eliminar
                     </a>
@@ -82,7 +82,7 @@
 
     <!-- Formulario -->
     <h4 class="mt-5">Agregar nuevo servicio</h4>
-    <form th:action="@{/servicio}" th:object="${nuevoServicio}" method="post" class="mt-3">
+    <form th:action="@{/admin/servicio}" th:object="${nuevoServicio}" method="post" class="mt-3">
         <div class="row g-3">
             <!-- Usuario -->
             <div class="col-md-6">

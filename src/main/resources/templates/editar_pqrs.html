@@ -1,14 +1,50 @@
 <!DOCTYPE html>
 <html lang="es" xmlns:th="http://www.thymeleaf.org">
+
 <head>
     <meta charset="UTF-8">
     <title>Editar PQRS</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Estilos -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-</head>
-<body class="bg-light">
+    <style>
+        body {
+            display: flex;
+            min-height: 100vh;
+        }
 
+        .sidebar {
+            width: 250px;
+            background-color: #f8f9fa;
+            padding-top: 1rem;
+            border-right: 1px solid #dee2e6;
+        }
+
+        .sidebar .nav-link {
+            color: #333;
+            padding: 10px 20px;
+        }
+
+        .sidebar .nav-link:hover {
+            background-color: #e9ecef;
+        }
+
+        .main-content {
+            flex-grow: 1;
+            padding: 2rem;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Menú lateral (fragmento) -->
+    <div th:replace="menu :: sidebar"></div>
+
+    <!-- Contenido principal -->
+    <div class="main-content">
 <div class="container py-5">
     <div class="card shadow">
         <div class="card-header bg-warning text-white text-center">
@@ -16,7 +52,7 @@
         </div>
 
         <div class="card-body">
-            <form th:action="@{/pqrs/actualizar}" th:object="${pqrsEditada}" method="post">
+            <form th:action="@{/admin/pqrs/actualizar}" th:object="${pqrsEditada}" method="post">
                 <input type="hidden" th:field="*{idPqrs}" />
 
                 <div class="row">
@@ -66,7 +102,7 @@
 
                 <div class="text-end">
                     <button type="submit" class="btn btn-success"><i class="fa-solid fa-check"></i> Guardar Cambios</button>
-                    <a th:href="@{/pqrs}" class="btn btn-secondary ms-2"><i class="fa-solid fa-arrow-left"></i> Cancelar</a>
+                    <a th:href="@{/admin/pqrs}" class="btn btn-secondary ms-2"><i class="fa-solid fa-arrow-left"></i> Cancelar</a>
                 </div>
             </form>
         </div>
@@ -77,6 +113,11 @@
     </div>
 </div>
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
+
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
 </body>
+
 </html>

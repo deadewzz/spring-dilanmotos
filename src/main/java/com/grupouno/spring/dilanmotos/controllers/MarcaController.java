@@ -20,11 +20,11 @@ public class MarcaController {
     private MarcaRepository marcaRepository;
 
     // Mostrar listado y formulario
-    @GetMapping("/admin/marca")
+    @GetMapping
     public String mostrarMarcas(@RequestParam(value = "search", required = false) String search, Model model) {
         List<Marca> marcas = (search != null && !search.isEmpty())
-            ? marcaRepository.findByNombreContainingIgnoreCase(search)
-            : marcaRepository.findAll();
+                ? marcaRepository.findByNombreContainingIgnoreCase(search)
+                : marcaRepository.findAll();
 
         model.addAttribute("marcas", marcas);
         model.addAttribute("nuevaMarca", new Marca());
@@ -32,12 +32,11 @@ public class MarcaController {
     }
 
     // Guardar nueva marca
-    @PostMapping("/admin/marca")
+    @PostMapping
     public String guardarMarca(
-        @Valid @NonNull @ModelAttribute("nuevaMarca") Marca marca,
-        BindingResult result,
-        Model model
-    ) {
+            @Valid @NonNull @ModelAttribute("nuevaMarca") Marca marca,
+            BindingResult result,
+            Model model) {
         if (result.hasErrors()) {
             model.addAttribute("marcas", marcaRepository.findAll());
             return "marca";
@@ -48,22 +47,21 @@ public class MarcaController {
     }
 
     // Mostrar formulario de edición
-    @GetMapping("/admin/marca/editar/{id}")
+    @GetMapping("/editar/{id}")
     public String editarMarca(@PathVariable("id") int id, Model model) {
         return marcaRepository.findById(id)
-            .map(marca -> {
-                model.addAttribute("marcaEditada", marca);
-                return "editar_marca";
-            })
-            .orElse("redirect:/admin/marca?error=not_found");
+                .map(marca -> {
+                    model.addAttribute("marcaEditada", marca);
+                    return "editar_marca";
+                })
+                .orElse("redirect:/admin/marca?error=not_found");
     }
 
     // Actualizar marca
-    @PostMapping("/admin/marca/actualizar")
+    @PostMapping("/actualizar")
     public String actualizarMarca(
-        @Valid @NonNull @ModelAttribute("marcaEditada") Marca marca,
-        BindingResult result
-    ) {
+            @Valid @NonNull @ModelAttribute("marcaEditada") Marca marca,
+            BindingResult result) {
         if (result.hasErrors()) {
             return "editar_marca";
         }
@@ -73,7 +71,7 @@ public class MarcaController {
     }
 
     // Eliminar marca
-    @GetMapping("/admin/marca/eliminar/{id}")
+    @GetMapping("/eliminar/{id}")
     public String eliminarMarca(@PathVariable("id") int id) {
         if (marcaRepository.existsById(id)) {
             marcaRepository.deleteById(id);
