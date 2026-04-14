@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Controller
-@RequestMapping("/historial")
+@RequestMapping("/admin/historial")
 public class HistorialController {
 
     private final HistorialRepository historialRepository;
@@ -51,17 +51,17 @@ public class HistorialController {
         return "redirect:/historial";
     }
 
-   @GetMapping("/editar/{id}")
+   @GetMapping("/admin/editar/{id}")
     public String editarHistorial(@NonNull @PathVariable("id") Integer id, Model model) {
     Optional<Historial> historialOpt = historialRepository.findById(id);
         if (historialOpt.isEmpty()) {
-            return "redirect:/historial";
+            return "redirect:/admin/historial";
         }
         model.addAttribute("historialEditado", historialOpt.get());
         return "editar_historial";
     }
 
-    @PostMapping("/actualizar")
+    @PostMapping("/admin/actualizar")
     public String actualizarHistorial(@NonNull @Valid @ModelAttribute("historialEditado") Historial historial,RedirectAttributes redirectAttributes,
                                       BindingResult result) {
         if (result.hasErrors()) {
@@ -70,12 +70,12 @@ public class HistorialController {
 
         historialRepository.save(historial);
         redirectAttributes.addAttribute("actualizado", true);
-        return "redirect:/historial";
+        return "redirect:/admin/historial";
     }
 
-    @GetMapping("/eliminar/{id}")
+    @GetMapping("/admin/eliminar/{id}")
     public String eliminarHistorial(@NonNull @PathVariable("id") Integer id) {
        historialRepository.deleteById(id);
-       return "redirect:/historial";
+       return "redirect:/admin/historial";
     }
 }

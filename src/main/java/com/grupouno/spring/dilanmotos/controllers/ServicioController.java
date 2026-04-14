@@ -16,7 +16,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import java.util.List;
 
 @Controller
-@RequestMapping("/servicio")
+@RequestMapping("/admin/servicio")
 public class ServicioController {
 
     @Autowired
@@ -59,7 +59,7 @@ public class ServicioController {
         }
         servicioRepository.save(servicio);
         redirectAttributes.addFlashAttribute("creado", true);
-        return "redirect:/servicio";
+        return "redirect:/admin/servicio";
     }
 
     @GetMapping("/editar/{id}")
@@ -72,7 +72,7 @@ public class ServicioController {
                     model.addAttribute("tiposServicio", tipoServicioRepository.findAll());
                     return "editar_servicio";
                 })
-                .orElse("redirect:/servicio");
+                .orElse("redirect:/admin/servicio");
     }
 
     @PostMapping("/actualizar")
@@ -88,13 +88,13 @@ public class ServicioController {
         }
         servicioRepository.save(servicio);
         redirectAttributes.addFlashAttribute("actualizado", true);
-        return "redirect:/servicio";
+        return "redirect:/admin/servicio";
     }
 
     @GetMapping("/eliminar/{id}")
     public String eliminarServicio(@PathVariable("id") Integer id, RedirectAttributes redirectAttributes) {
         servicioRepository.deleteById(id);
         redirectAttributes.addFlashAttribute("eliminado", true);
-        return "redirect:/servicio";
+        return "redirect:/admin/servicio";
     }
 }

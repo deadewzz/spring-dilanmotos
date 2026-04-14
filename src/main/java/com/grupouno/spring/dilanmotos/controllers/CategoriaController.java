@@ -13,12 +13,15 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @Controller
+@RequestMapping("/admin/categoria")
 public class CategoriaController {
     @Autowired
     private CategoriaRepository categoriaRepository;
 
     // Mostrar listado y formulario
-    @GetMapping("/categoria")
+
+
+    @GetMapping("/admin/categoria")
     public String mostrarCategorias(@RequestParam(value = "search", required = false) String search, Model model) {
         List<Categoria> categorias = (search != null && !search.isEmpty())
             ? categoriaRepository.findByNombreContainingIgnoreCase(search)
@@ -29,7 +32,7 @@ public class CategoriaController {
         return "categoria";
     }
 
-     @PostMapping("/categoria")
+     @PostMapping("/admin/categoria")
     public String guardarCategoria(
         @Valid @NonNull @ModelAttribute("nuevaCategoria") Categoria categoria,
         BindingResult result,
@@ -41,10 +44,10 @@ public class CategoriaController {
         }
 
         categoriaRepository.save(categoria);
-        return "redirect:/categoria?creado";
+        return "redirect:/admin/categoria?creado";
     }
 
-     @GetMapping("/categoria/editar/{id}")
+     @GetMapping("/admin/categoria/editar/{id}")
     public String editarMecanico(@PathVariable("id") int id, Model model) {
         Categoria categoria = categoriaRepository.findById(id).orElse(null);
         model.addAttribute("categoriaEditada", categoria);
@@ -53,7 +56,7 @@ public class CategoriaController {
 
 
     //Actualizar las categorías
-    @PostMapping("/categoria/actualizar")
+    @PostMapping("/admin/categoria/actualizar")
     public String actualizarCategoria(
         @Valid @NonNull @ModelAttribute("categoriaEditada") Categoria categoria,
         BindingResult result
@@ -63,17 +66,17 @@ public class CategoriaController {
         }
 
         categoriaRepository.save(categoria);
-        return "redirect:/categoria?actualizado";
+        return "redirect:/admin/categoria?actualizado";
     }
 
     // Eliminar categoría
-    @GetMapping("/categoria/eliminar/{id}")
+    @GetMapping("/admin/categoria/eliminar/{id}")
     public String eliminarCategoria(@PathVariable("id") int id) {
         if (categoriaRepository.existsById(id)) {
             categoriaRepository.deleteById(id);
-            return "redirect:/categoria?eliminado";
+            return "redirect:/admin/categoria?eliminado";
         }
-        return "redirect:/categoria?error=not_found";
+        return "redirect:/admin/categoria?error=not_found";
     }
 
 

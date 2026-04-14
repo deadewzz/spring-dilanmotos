@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @Controller
-@RequestMapping("/caracteristicas")
+@RequestMapping("/admin/caracteristicas")
 public class CaracteristicasController {
 
     @Autowired
@@ -57,11 +57,11 @@ public class CaracteristicasController {
         caracteristica.setMoto(moto);
 
         caracteristicasRepository.save(caracteristica);
-        return "redirect:/caracteristicas?creado";
+        return "redirect:/admin/caracteristicas?creado";
     }
 
     // Mostrar formulario de edición
-    @GetMapping("/editar/{id}")
+    @GetMapping("/admin/caracteristicas/editar/{id}")
     public String editarCaracteristica(@PathVariable("id") int id, Model model) {
         return caracteristicasRepository.findById(id)
                 .map(caracteristica -> {
@@ -69,11 +69,11 @@ public class CaracteristicasController {
                     model.addAttribute("motos", motoRepository.findAll());
                     return "editar_caracteristicas";
                 })
-                .orElse("redirect:/caracteristicas?error=not_found");
+                .orElse("redirect:/admin/caracteristicas?error=not_found");
     }
 
     // Actualizar característica
-    @PostMapping("/actualizar")
+    @PostMapping("/admin/caracteristicas/actualizar")
     public String actualizarCaracteristica(
             @Valid @NonNull @ModelAttribute("caracteristicaEditada") Caracteristicas caracteristica,
             BindingResult result,
@@ -88,16 +88,16 @@ public class CaracteristicasController {
         caracteristica.setMoto(moto);
 
         caracteristicasRepository.save(caracteristica);
-        return "redirect:/caracteristicas?actualizado";
+        return "redirect:/admin/caracteristicas?actualizado";
     }
 
     // Eliminar característica
-    @GetMapping("/eliminar/{id}")
+    @GetMapping("/admin/caracteristicas/eliminar/{id}")
     public String eliminarCaracteristica(@PathVariable("id") int id) {
         if (caracteristicasRepository.existsById(id)) {
             caracteristicasRepository.deleteById(id);
-            return "redirect:/caracteristicas?eliminado";
+            return "redirect:/admin/caracteristicas?eliminado";
         }
-        return "redirect:/caracteristicas?error=not_found";
+        return "redirect:/admin/caracteristicas?error=not_found";
     }
 }

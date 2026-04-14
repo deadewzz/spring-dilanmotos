@@ -13,13 +13,14 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @Controller
+@RequestMapping("/admin/cotizacion")
 public class CotizacionController {
 
     @Autowired
     private CotizacionRepository cotizacionRepository;
 
     // Mostrar listado y formulario
-    @GetMapping("/cotizacion")
+    @GetMapping("/admin/cotizacion")
     public String mostrarCotizaciones(@RequestParam(value = "search", required = false) String search, Model model) {
         List<Cotizacion> cotizaciones = (search != null && !search.isEmpty())
             ? cotizacionRepository.findByProductoContainingIgnoreCase(search)
@@ -31,7 +32,7 @@ public class CotizacionController {
     }
 
     // Guardar nueva cotización
-    @PostMapping("/cotizacion")
+    @PostMapping("/admin/cotizacion")
     public String guardarCotizacion(
         @Valid @NonNull @ModelAttribute("nuevaCotizacion") Cotizacion cotizacion,
         BindingResult result,
@@ -43,22 +44,22 @@ public class CotizacionController {
         }
 
         cotizacionRepository.save(cotizacion);
-        return "redirect:/cotizacion?creado";
+        return "redirect:/admin/cotizacion?creado";
     }
 
     // Mostrar formulario de edición
-    @GetMapping("/cotizacion/editar/{id}")
+    @GetMapping("/admin/cotizacion/editar/{id}")
     public String editarCotizacion(@PathVariable("id") int id, Model model) {
         return cotizacionRepository.findById(id)
             .map(cotizacion -> {
                 model.addAttribute("cotizacionEditada", cotizacion);
                 return "editar_cotizacion";
             })
-            .orElse("redirect:/cotizacion?error=not_found");
+            .orElse("redirect:/admin/cotizacion?error=not_found");
     }
 
     // Actualizar cotización
-    @PostMapping("/cotizacion/editar/{id}")
+    @PostMapping("/admin/cotizacion/actualizar/{id}")
     public String actualizarCotizacion(
         @PathVariable("id") int id,
         @Valid @NonNull @ModelAttribute("cotizacionEditada") Cotizacion cotizacion,
@@ -77,18 +78,18 @@ public class CotizacionController {
                 existingCotizacion.setPrecioUnitario(cotizacion.getPrecioUnitario());
                 existingCotizacion.setProductoAgregado(cotizacion.isProductoAgregado());    
                 cotizacionRepository.save(existingCotizacion);
-                return "redirect:/cotizacion?actualizado";
+                return "redirect:/admin/cotizacion?actualizado";
             })
-            .orElse("redirect:/cotizacion?error=not_found");
+            .orElse("redirect:/admin/cotizacion?error=not_found");
     }
 
     // Eliminar cotización
-    @PostMapping("/cotizacion/eliminar/{id}")
+    @PostMapping("/admin/cotizacion/eliminar/{id}")
     public String eliminarCotizacion(@PathVariable("id") int id) {
         if (cotizacionRepository.existsById(id)) {
             cotizacionRepository.deleteById(id);
-            return "redirect:/cotizacion?eliminado";
+            return "redirect:/admin/cotizacion?eliminado";
         }
-        return "redirect:/cotizacion?error=not_found";
+        return "redirect:/admin/cotizacion?error=not_found";
     }
 }

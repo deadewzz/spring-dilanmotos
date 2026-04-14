@@ -15,19 +15,23 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         return http
+            .csrf(csrf -> csrf.disable()) // Recomendado deshabilitar mientras desarrollas
             .authorizeHttpRequests(auth -> auth
+                
+                // 1. RUTAS PÚBLICAS Y DE ERROR
                 .requestMatchers(
                     "/login", "/register", "/forgot-password",
-                    "/verify-code", "/reset-password", "/css/**", "/js/**"
+                    "/verify-code", "/reset-password", "/css/**", "/js/**", "/error/**"
                 ).permitAll()
-                .requestMatchers("/admin/**").hasRole("ADMIN")
                 
-                // MANEJO DEL ERROR 401 (Unauthorized):
-                // Al poner .authenticated(), si un usuario intenta entrar a cualquier ruta
-                // sin estar logueado, Spring Security lanza internamente un 401. 
-                // Automáticamente intercepta este 401 y redirige al usuario a la página de "/login".
+                // 2. LA MAGIA DEL PREFIJO: Todo lo que empiece con /admin/ requiere ser ADMIN
+                // Usamos hasAuthority para que coincida exactamente con tu base de datos
+                .requestMatchers("/admin/**").hasAuthority("ADMIN")
                 
-                .requestMatchers("/CuentaUsuario").authenticated()
+                // 3. RUTAS PROTEGIDAS GENERALES (Para usuarios normales)
+                .requestMatchers("/CuentaUsuario", "/dashboard").authenticated()
+                
+                // 4. CANDADO FINAL
                 .anyRequest().authenticated()
             )
             .formLogin(form -> form
@@ -44,12 +48,6 @@ public class SecurityConfig {
                 .logoutSuccessUrl("/login?logout")
                 .permitAll()
             )
-            
-            // MANEJO DEL ERROR 403 (Forbidden):
-            // Ocurre cuando el usuario SI está logueado, pero intenta entrar a una ruta 
-            // que no le corresponde (ej. un usuario normal intentando entrar a "/admin/**").
-            // Aquí le decimos que en lugar de mostrar un error feo, lo mande a nuestra ruta "/error/403".
-
             .exceptionHandling(ex -> ex
                 .accessDeniedPage("/error/403") 
             )

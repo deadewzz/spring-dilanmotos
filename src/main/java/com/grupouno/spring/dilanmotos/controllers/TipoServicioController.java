@@ -13,13 +13,14 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @Controller
+@RequestMapping("/admin/tipoServicio")
 public class TipoServicioController {
 
     @Autowired
     private TipoServicioRepository tipoServicioRepository;
 
     // Mostrar listado y formulario
-    @GetMapping("/tipoServicio")
+    @GetMapping("/admin/tipoServicio")
     public String mostrarTipoServicios(@RequestParam(value = "search", required = false) String search, Model model) {
         List<TipoServicio> tipoServicios = (search != null && !search.isEmpty())
             ? tipoServicioRepository.findByNombreContainingIgnoreCase(search)
@@ -31,7 +32,7 @@ public class TipoServicioController {
     }
 
     // Guardar nuevo tipo de servicio
-    @PostMapping("/tipoServicio")
+    @PostMapping("/admin/tipoServicio")
     public String guardarTipoServicio(
         @Valid @NonNull @ModelAttribute("nuevoTipoServicio") TipoServicio tipoServicio,
         BindingResult result,
@@ -47,18 +48,18 @@ public class TipoServicioController {
     }
 
     // Mostrar formulario de edición
-    @GetMapping("/tipoServicio/editar/{id}")
+    @GetMapping("/admin/tipoServicio/editar/{id}")
     public String editarTipoServicio(@PathVariable("id") int id, Model model) {
         return tipoServicioRepository.findById(id)
             .map(tipoServicio -> {
                 model.addAttribute("tipoServicioEditado", tipoServicio);
                 return "editar_tipoServicio";
             })
-            .orElse("redirect:/tipoServicio?error=not_found");
+            .orElse("redirect:/admin/tipoServicio?error=not_found");
     }
 
     // Actualizar tipo de servicio
-    @PostMapping("/tipoServicio/actualizar")
+    @PostMapping("/admin/tipoServicio/actualizar")
     public String actualizarTipoServicio(
         @Valid @NonNull @ModelAttribute("tipoServicioEditado") TipoServicio tipoServicio,
         BindingResult result
@@ -68,16 +69,16 @@ public class TipoServicioController {
         }
 
         tipoServicioRepository.save(tipoServicio);
-        return "redirect:/tipoServicio?actualizado";
+        return "redirect:/admin/tipoServicio?actualizado";
     }
 
     // Eliminar tipo de servicio
-    @GetMapping("/tipoServicio/eliminar/{id}")
+    @GetMapping("/admin/tipoServicio/eliminar/{id}")
     public String eliminarTipoServicio(@PathVariable("id") int id) {
         if (tipoServicioRepository.existsById(id)) {
             tipoServicioRepository.deleteById(id);
-            return "redirect:/tipoServicio?eliminado";
+            return "redirect:/admin/tipoServicio?eliminado";
         }
-        return "redirect:/tipoServicio?error=not_found";
+        return "redirect:/admin/tipoServicio?error=not_found";
     }
 }

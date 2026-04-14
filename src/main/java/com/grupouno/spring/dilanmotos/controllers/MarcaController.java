@@ -13,13 +13,14 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @Controller
+@RequestMapping("/admin/marca")
 public class MarcaController {
 
     @Autowired
     private MarcaRepository marcaRepository;
 
     // Mostrar listado y formulario
-    @GetMapping("/marca")
+    @GetMapping("/admin/marca")
     public String mostrarMarcas(@RequestParam(value = "search", required = false) String search, Model model) {
         List<Marca> marcas = (search != null && !search.isEmpty())
             ? marcaRepository.findByNombreContainingIgnoreCase(search)
@@ -31,7 +32,7 @@ public class MarcaController {
     }
 
     // Guardar nueva marca
-    @PostMapping("/marca")
+    @PostMapping("/admin/marca")
     public String guardarMarca(
         @Valid @NonNull @ModelAttribute("nuevaMarca") Marca marca,
         BindingResult result,
@@ -43,22 +44,22 @@ public class MarcaController {
         }
 
         marcaRepository.save(marca);
-        return "redirect:/marca?creado";
+        return "redirect:/admin/marca?creado";
     }
 
     // Mostrar formulario de edición
-    @GetMapping("/marca/editar/{id}")
+    @GetMapping("/admin/marca/editar/{id}")
     public String editarMarca(@PathVariable("id") int id, Model model) {
         return marcaRepository.findById(id)
             .map(marca -> {
                 model.addAttribute("marcaEditada", marca);
                 return "editar_marca";
             })
-            .orElse("redirect:/marca?error=not_found");
+            .orElse("redirect:/admin/marca?error=not_found");
     }
 
     // Actualizar marca
-    @PostMapping("/marca/actualizar")
+    @PostMapping("/admin/marca/actualizar")
     public String actualizarMarca(
         @Valid @NonNull @ModelAttribute("marcaEditada") Marca marca,
         BindingResult result
@@ -68,16 +69,16 @@ public class MarcaController {
         }
 
         marcaRepository.save(marca);
-        return "redirect:/marca?actualizado";
+        return "redirect:/admin/marca?actualizado";
     }
 
     // Eliminar marca
-    @GetMapping("/marca/eliminar/{id}")
+    @GetMapping("/admin/marca/eliminar/{id}")
     public String eliminarMarca(@PathVariable("id") int id) {
         if (marcaRepository.existsById(id)) {
             marcaRepository.deleteById(id);
-            return "redirect:/marca?eliminado";
+            return "redirect:/admin/marca?eliminado";
         }
-        return "redirect:/marca?error=not_found";
+        return "redirect:/admin/marca?error=not_found";
     }
 }

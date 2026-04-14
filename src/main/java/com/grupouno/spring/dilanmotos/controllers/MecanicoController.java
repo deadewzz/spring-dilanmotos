@@ -11,12 +11,13 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import org.springframework.lang.NonNull;
 @Controller
+@RequestMapping("/admin/mecanico")
 public class MecanicoController {
 
     @Autowired
     private MecanicoRepository mecanicoRepository; 
 
-    @GetMapping("/mecanico")
+    @GetMapping("/admin/mecanico")
     public String mostrarMecanicos(@RequestParam(value = "search", required = false) String search, Model model) {
     List<Mecanico> mecanico = (search != null && !search.isEmpty())
          
@@ -28,36 +29,36 @@ public class MecanicoController {
     return "mecanico";
     }
 
-    @PostMapping("/mecanico")
+    @PostMapping("/admin/mecanico")
     public String guardarMecanico(@NonNull @Valid @ModelAttribute("nuevoMecanico") Mecanico mecanico, BindingResult result, Model model) {
         if (result.hasErrors()) {
             model.addAttribute("mecanico", mecanicoRepository.findAll());
             return "mecanico";
         }
         mecanicoRepository.save(mecanico);
-        return "redirect:/mecanico";
+        return "redirect:/admin/mecanico";
     }
 
-    @GetMapping("/mecanico/editar/{id}")
+    @GetMapping("/admin/mecanico/editar/{id}")
     public String editarMecanico(@PathVariable("id") int id, Model model) {
         Mecanico mecanico = mecanicoRepository.findById(id).orElse(null);
         model.addAttribute("mecanicoEditado", mecanico);
         return "editar_mecanico";
     }
 
-    @PostMapping("/mecanico/actualizar")
+    @PostMapping("/admin/mecanico/actualizar")
     public String actualizarMecanico(@NonNull @Valid @ModelAttribute("mecanicoEditado") Mecanico mecanico, BindingResult result) {
         if (result.hasErrors()) {
             return "editar_mecanico";
         }
         mecanicoRepository.save(mecanico);
-        return "redirect:/mecanico";
+        return "redirect:/admin/mecanico";
     }
 
-    @GetMapping("/mecanico/eliminar/{id}")
+    @GetMapping("/admin/mecanico/eliminar/{id}")
     public String eliminarMecanico(@PathVariable("id") int id) {
         mecanicoRepository.deleteById(id);
-        return "redirect:/mecanico";
+        return "redirect:/admin/mecanico";
     }
 
 }

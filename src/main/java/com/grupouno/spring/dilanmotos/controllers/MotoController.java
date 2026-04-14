@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @Controller
+@RequestMapping("/admin/moto")
 public class MotoController {
 
     private final MotoRepository motoRepository;
@@ -29,7 +30,7 @@ public class MotoController {
     }
 
     // --- LISTADO DE MOTOS ---
-    @GetMapping("/moto")
+    @GetMapping("/admin/moto")
     public String listarMotos(Model model) {
         List<Moto> motos = motoRepository.findAll();
         model.addAttribute("motos", motos);
@@ -45,7 +46,7 @@ public class MotoController {
     }
 
     // --- BUSCAR POR MODELO ---
-    @GetMapping("/moto/buscar")
+    @GetMapping("/admin/moto/buscar")
     public String buscarPorModelo(@RequestParam("modelo") String modelo, Model model, Authentication auth) {
         String correo = auth.getName();
         Usuarios usuario = usuarioRepository.findByCorreo(correo).orElseThrow();
@@ -62,7 +63,7 @@ public class MotoController {
     }
 
     // --- REGISTRAR MOTO ---
-    @PostMapping("/moto")
+    @PostMapping("/admin/moto")
     public String registrarMoto(@ModelAttribute("nuevaMoto") Moto nuevaMoto,
                                 @RequestParam("idMarca") Integer idMarca,
                                 Authentication auth) {
@@ -76,11 +77,11 @@ public class MotoController {
 
         motoRepository.save(nuevaMoto);
 
-        return "redirect:/moto?creado=true";
+        return "redirect:/admin/moto?creado=true";
     }
 
     // --- EDITAR MOTO ---
-    @GetMapping("/moto/editar/{id}")
+    @GetMapping("/admin/moto/editar/{id}")
     public String editarMoto(@PathVariable("id") Integer idMoto, Model model) {
         Moto moto = motoRepository.findById(idMoto).orElseThrow();
 
@@ -91,20 +92,20 @@ public class MotoController {
         return "editar_moto";
     }
 
-    @PostMapping("/moto/actualizar")
+    @PostMapping("/admin/moto/actualizar")
     public String actualizarMoto(@ModelAttribute("motoEditada") Moto motoEditada,
                                  @RequestParam("idMarca") Integer idMarca) {
         Marca marca = marcaRepository.findById(idMarca).orElseThrow();
         motoEditada.setMarca(marca);
 
         motoRepository.save(motoEditada);
-        return "redirect:/moto?actualizado=true";
+        return "redirect:/admin/moto?actualizado=true";
     }
 
     // --- ELIMINAR MOTO ---
-    @GetMapping("/moto/eliminar/{id}")
+    @GetMapping("/admin/moto/eliminar/{id}")
     public String eliminarMoto(@PathVariable("id") Integer idMoto) {
         motoRepository.deleteById(idMoto);
-        return "redirect:/moto?eliminado=true";
+        return "redirect:/admin/moto?eliminado=true";
     }
 }

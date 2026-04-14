@@ -26,8 +26,19 @@ public class UsuarioController {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
+    private final UsuarioService usuarioService;
+
+    // Constructor
+    public UsuarioController(UsuarioService usuarioService) {
+        this.usuarioService = usuarioService;
+    }
+
+    // ==========================================
+    // RUTAS DE ADMINISTRADOR (Llevan /admin/)
+    // ==========================================
+
     // Mostrar listado y formulario
-    @GetMapping("/usuario")
+    @GetMapping("/admin/usuario")
     public String mostrarUsuarios(@RequestParam(value = "search", required = false) String search, Model model) {
         List<Usuarios> usuarios = (search != null && !search.isEmpty())
             ? usuarioRepository.findByNombreContainingIgnoreCaseOrCorreoContainingIgnoreCase(search, search)
@@ -35,11 +46,13 @@ public class UsuarioController {
 
         model.addAttribute("usuarios", usuarios);
         model.addAttribute("nuevoUsuario", new Usuarios());
-        return "usuario";
+        
+        // Retorna la vista HTML (esto NO cambia, sigue buscando "usuario.html" en templates)
+        return "usuario"; 
     }
 
     // Guardar nuevo usuario desde panel admin
-    @PostMapping("/usuario")
+    @PostMapping("/admin/usuario")
     public String guardarUsuario(
         @Valid @NonNull @ModelAttribute("nuevoUsuario") Usuarios usuario,
         BindingResult result,
@@ -53,22 +66,24 @@ public class UsuarioController {
         // Encriptar contraseña antes de guardar
         usuario.setContrasena(passwordEncoder.encode(usuario.getContrasena()));
         usuarioRepository.save(usuario);
-        return "redirect:/usuario?creado";
+        
+        // ¡Importante! El redirect ahora apunta a la nueva ruta
+        return "redirect:/admin/usuario?creado";
     }
 
     // Mostrar formulario de edición
-    @GetMapping("/usuario/editar/{id}")
+    @GetMapping("/admin/usuario/editar/{id}")
     public String editarUsuario(@PathVariable("id") int id, Model model) {
         return usuarioRepository.findById(id)
             .map(usuario -> {
                 model.addAttribute("usuarioEditado", usuario);
                 return "editar_usuario";
             })
-            .orElse("redirect:/usuario?error=not_found");
+            .orElse("redirect:/admin/usuario?error=not_found");
     }
 
     // Actualizar usuario
-    @PostMapping("/usuario/actualizar")
+    @PostMapping("/admin/usuario/actualizar")
     public String actualizarUsuario(
         @Valid @NonNull @ModelAttribute("usuarioEditado") Usuarios usuario,
         BindingResult result
@@ -80,25 +95,24 @@ public class UsuarioController {
         // Encriptar contraseña al actualizar
         usuario.setContrasena(passwordEncoder.encode(usuario.getContrasena()));
         usuarioRepository.save(usuario);
-        return "redirect:/usuario?actualizado";
+        
+        return "redirect:/admin/usuario?actualizado";
     }
 
     // Eliminar usuario
-    @GetMapping("/usuario/eliminar/{id}")
+    @GetMapping("/admin/usuario/eliminar/{id}")
     public String eliminarUsuario(@PathVariable("id") int id) {
         if (usuarioRepository.existsById(id)) {
             usuarioRepository.deleteById(id);
-            return "redirect:/usuario?eliminado";
+            return "redirect:/admin/usuario?eliminado";
         }
-        return "redirect:/usuario?error=not_found";
+        return "redirect:/admin/usuario?error=not_found";
     }
 
-    private final UsuarioService usuarioService;
 
-    // Constructor correcto
-    public UsuarioController(UsuarioService usuarioService) {
-        this.usuarioService = usuarioService;
-    }
+    // ==========================================
+    // RUTAS DE USUARIO GENERAL (SIN /admin/)
+    // ==========================================
 
     // Perfil/Cuenta del usuario autenticado
     @GetMapping("/CuentaUsuario")
@@ -109,5 +123,4 @@ public class UsuarioController {
         model.addAttribute("usuario", usuarioActual);
         return "CuentaUsuario";
     }
-
 }

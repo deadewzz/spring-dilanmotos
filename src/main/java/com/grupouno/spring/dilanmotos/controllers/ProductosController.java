@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @Controller
+@RequestMapping("/admin/productos")
 public class ProductosController {
 
     @Autowired private ProductosRepository productosRepository;
@@ -24,7 +25,7 @@ public class ProductosController {
     // ---------------- CRUD GENERAL ----------------
 
     // Listar productos
-    @GetMapping("/productos")
+    @GetMapping("/admin/productos")
     public String mostrarProducto(@RequestParam(value = "search", required = false) String search, Model model) {
         List<Productos> resultados = (search != null && !search.isEmpty())
             ? productosRepository.findByNombreContainingIgnoreCaseOrDescripcionContainingIgnoreCase(search, search)
@@ -38,7 +39,7 @@ public class ProductosController {
     }
 
     // Guardar producto
-    @PostMapping("/productos/guardar")
+    @PostMapping("/admin/productos/guardar")
     public String guardarProducto(@Valid @NonNull @ModelAttribute("nuevoProducto") Productos producto,
                                   BindingResult result, Model model) {
         if (result.hasErrors()) {
@@ -48,11 +49,11 @@ public class ProductosController {
             return "productos";
         }
         productosRepository.save(producto);
-        return "redirect:/productos?creado";
+        return "redirect:/admin/productos?creado";
     }
 
     // Editar producto
-    @GetMapping("/productos/editar/{id}")
+    @GetMapping("/admin/productos/editar/{id}")
     public String editarProducto(@PathVariable("id") int id, Model model) {
         return productosRepository.findById(id)
             .map(producto -> {
@@ -61,28 +62,28 @@ public class ProductosController {
                 model.addAttribute("marcas", marcaRepository.findAll());
                 return "editar_productos";
             })
-            .orElse("redirect:/productos?error=not_found");
+            .orElse("redirect:/admin/productos?error=not_found");
     }
 
     // Actualizar producto
-    @PostMapping("/productos/actualizar")
+    @PostMapping("/admin/productos/actualizar")
     public String actualizarProducto(@Valid @NonNull @ModelAttribute("productoEditada") Productos producto,
                                      BindingResult result) {
         if (result.hasErrors()) {
             return "editar_productos";
         }
         productosRepository.save(producto);
-        return "redirect:/productos?actualizado";
+        return "redirect:/admin/productos?actualizado";
     }
 
     // Eliminar producto
-    @GetMapping("/productos/eliminar/{id}")
+    @GetMapping("/admin/productos/eliminar/{id}")
     public String eliminarProducto(@PathVariable("id") int id) {
         if (productosRepository.existsById(id)) {
             productosRepository.deleteById(id);
-            return "redirect:/productos?eliminado";
+            return "redirect:/admin/productos?eliminado";
         }
-        return "redirect:/productos?error=not_found";
+        return "redirect:/admin/productos?error=not_found";
     }
 
     // ---------------- NUEVAS RUTAS DE CATÁLOGO ----------------

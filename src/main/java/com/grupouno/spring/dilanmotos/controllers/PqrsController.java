@@ -31,6 +31,7 @@ import java.util.List;
  * @version 1.0
  */
 @Controller
+@RequestMapping("/admin/pqrs")
 public class PqrsController {
 
     @Autowired
@@ -65,7 +66,7 @@ public class PqrsController {
      * @param model  modelo para pasar datos a la vista
      * @return redirección a "/pqrs" con parámetro de estado
      */
-    @PostMapping("/pqrs")
+    @PostMapping("/admin/pqrs")
     public String guardarPqrs(@Valid @NonNull @ModelAttribute("nuevoPqrs") PQRS pqrs, BindingResult result, Model model) {
         if (result.hasErrors()) {
             model.addAttribute("pqrs", pqrsRepository.findAll());
@@ -92,14 +93,14 @@ public class PqrsController {
      * @param model modelo para pasar datos a la vista
      * @return vista "editar_pqrs" si existe, redirección si no se encuentra
      */
-    @GetMapping("/pqrs/editar/{id}")
+    @GetMapping("/admin/pqrs/editar/{id}")
     public String editarPqrs(@PathVariable("id") int id, Model model) {
         return pqrsRepository.findById(id)
                 .map(pqrs -> {
                     model.addAttribute("pqrsEditada", pqrs);
                     return "editar_pqrs";
                 })
-                .orElse("redirect:/pqrs?error=not_found");
+                .orElse("redirect:/admin/pqrs?error=not_found");
     }
 
     /**
@@ -107,29 +108,29 @@ public class PqrsController {
      *
      * @param pqrs   objeto PQRS editado
      * @param result resultado de la validación
-     * @return redirección a "/pqrs" con parámetro de estado
+     * @return redirección a "/admin/pqrs" con parámetro de estado
      */
-    @PostMapping("/pqrs/actualizar")
+    @PostMapping("/admin/pqrs/actualizar")
     public String actualizarPqrs(@Valid @NonNull @ModelAttribute("pqrsEditada") PQRS pqrs, BindingResult result) {
         if (result.hasErrors()) {
             return "editar_pqrs";
         }
         pqrsRepository.save(pqrs);
-        return "redirect:/pqrs?actualizado";
+        return "redirect:/admin/pqrs?actualizado";
     }
 
     /**
      * Elimina un PQRS por su identificador.
      *
      * @param id identificador del PQRS
-     * @return redirección a "/pqrs" con parámetro de estado
+     * @return redirección a "/admin/pqrs" con parámetro de estado
      */
-    @GetMapping("/pqrs/eliminar/{id}")
+    @GetMapping("/admin/pqrs/eliminar/{id}")
     public String eliminarPqrs(@PathVariable("id") int id) {
         if (pqrsRepository.existsById(id)) {
             pqrsRepository.deleteById(id);
-            return "redirect:/pqrs?eliminado";
+            return "redirect:/admin/pqrs?eliminado";
         }
-        return "redirect:/pqrs?error=not_found";
+        return "redirect:/admin/pqrs?error=not_found";
     }
 }
