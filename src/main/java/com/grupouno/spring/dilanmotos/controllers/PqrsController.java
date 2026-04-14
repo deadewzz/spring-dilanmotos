@@ -2,6 +2,8 @@ package com.grupouno.spring.dilanmotos.controllers;
 
 import com.grupouno.spring.dilanmotos.models.PQRS;
 import com.grupouno.spring.dilanmotos.repositories.PqrsRepository;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.lang.NonNull;
@@ -13,17 +15,15 @@ import org.springframework.web.bind.annotation.*;
 import java.time.LocalDateTime;
 import java.util.List;
 
-/**
- * Controlador para gestionar las operaciones relacionadas con PQRS
- * (Peticiones, Quejas, Reclamos y Sugerencias).
- */
 @Controller
 @RequestMapping("/admin/pqrs")
+@Tag(name = "PQRS", description = "Operaciones de Peticiones, Quejas, Reclamos y Sugerencias")
 public class PqrsController {
 
     @Autowired
     private PqrsRepository pqrsRepository;
 
+    @Operation(summary = "Listar PQRS", description = "Obtiene todas las PQRS con filtro de búsqueda")
     @GetMapping
     public String mostrarPqrs(@RequestParam(value = "search", required = false) String search, Model model) {
         List<PQRS> pqrs = (search != null && !search.isEmpty())
@@ -35,6 +35,7 @@ public class PqrsController {
         return "pqrs_menu";
     }
 
+    @Operation(summary = "Crear PQRS", description = "Guarda una nueva PQRS inicializando estado y fechas")
     @PostMapping
     public String guardarPqrs(@Valid @NonNull @ModelAttribute("nuevoPqrs") PQRS pqrs, BindingResult result,
             Model model) {
@@ -55,6 +56,7 @@ public class PqrsController {
         return "redirect:/admin/pqrs?creado";
     }
 
+    @Operation(summary = "Formulario editar PQRS", description = "Carga los datos de una PQRS específica")
     @GetMapping("/editar/{id}")
     public String editarPqrs(@PathVariable("id") int id, Model model) {
         return pqrsRepository.findById(id)
@@ -65,6 +67,7 @@ public class PqrsController {
                 .orElse("redirect:/admin/pqrs?error=not_found");
     }
 
+    @Operation(summary = "Actualizar PQRS", description = "Guarda los cambios realizados a una PQRS")
     @PostMapping("/actualizar")
     public String actualizarPqrs(@Valid @NonNull @ModelAttribute("pqrsEditada") PQRS pqrs, BindingResult result) {
         if (result.hasErrors()) {
@@ -74,6 +77,7 @@ public class PqrsController {
         return "redirect:/admin/pqrs?actualizado";
     }
 
+    @Operation(summary = "Eliminar PQRS", description = "Elimina un registro de PQRS por su ID")
     @GetMapping("/eliminar/{id}")
     public String eliminarPqrs(@PathVariable("id") int id) {
         if (pqrsRepository.existsById(id)) {

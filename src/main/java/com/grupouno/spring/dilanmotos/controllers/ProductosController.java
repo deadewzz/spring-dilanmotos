@@ -4,6 +4,8 @@ import com.grupouno.spring.dilanmotos.models.Productos;
 import com.grupouno.spring.dilanmotos.repositories.CategoriaRepository;
 import com.grupouno.spring.dilanmotos.repositories.MarcaRepository;
 import com.grupouno.spring.dilanmotos.repositories.ProductosRepository;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.lang.NonNull;
@@ -16,6 +18,7 @@ import java.util.List;
 
 @Controller
 @RequestMapping("/admin/productos")
+@Tag(name = "Productos", description = "Gestión de inventario y catálogos de productos")
 public class ProductosController {
 
     @Autowired
@@ -25,6 +28,7 @@ public class ProductosController {
     @Autowired
     private MarcaRepository marcaRepository;
 
+    @Operation(summary = "Listar productos", description = "Muestra la vista de productos con opción de búsqueda")
     @GetMapping
     public String mostrarProducto(@RequestParam(value = "search", required = false) String search, Model model) {
         List<Productos> resultados = (search != null && !search.isEmpty())
@@ -38,6 +42,7 @@ public class ProductosController {
         return "productos";
     }
 
+    @Operation(summary = "Guardar producto", description = "Registra un nuevo producto en la base de datos")
     @PostMapping("/guardar")
     public String guardarProducto(@Valid @NonNull @ModelAttribute("nuevoProducto") Productos producto,
             BindingResult result, Model model) {
@@ -51,6 +56,7 @@ public class ProductosController {
         return "redirect:/admin/productos?creado";
     }
 
+    @Operation(summary = "Formulario de edición", description = "Obtiene un producto por ID para editarlo")
     @GetMapping("/editar/{id}")
     public String editarProducto(@PathVariable("id") int id, Model model) {
         return productosRepository.findById(id)
@@ -63,6 +69,7 @@ public class ProductosController {
                 .orElse("redirect:/admin/productos?error=not_found");
     }
 
+    @Operation(summary = "Actualizar producto", description = "Actualiza los datos de un producto existente")
     @PostMapping("/actualizar")
     public String actualizarProducto(@Valid @NonNull @ModelAttribute("productoEditada") Productos producto,
             BindingResult result) {
@@ -73,6 +80,7 @@ public class ProductosController {
         return "redirect:/admin/productos?actualizado";
     }
 
+    @Operation(summary = "Eliminar producto", description = "Borra físicamente un producto por su ID")
     @GetMapping("/eliminar/{id}")
     public String eliminarProducto(@PathVariable("id") int id) {
         if (productosRepository.existsById(id)) {
@@ -82,6 +90,7 @@ public class ProductosController {
         return "redirect:/admin/productos?error=not_found";
     }
 
+    @Operation(summary = "Catálogo Kit Arrastre", description = "Vista filtrada para kits de arrastre")
     @GetMapping("/CatalogoKitArrastreAutenticado")
     public String catalogoKitArrastre(@RequestParam(required = false) String marca, Model model) {
         String categoria = "Kit de arrastre";
@@ -96,6 +105,7 @@ public class ProductosController {
         return "CatalogoKitArrastreAutenticado";
     }
 
+    @Operation(summary = "Catálogo Aceites", description = "Vista filtrada para aceites")
     @GetMapping("/CatalogoAceiteAutenticado")
     public String catalogoAceite(@RequestParam(required = false) String marca, Model model) {
         String categoria = "Aceites";
@@ -110,6 +120,7 @@ public class ProductosController {
         return "CatalogoAceiteAutenticado";
     }
 
+    @Operation(summary = "Catálogo Llantas", description = "Vista filtrada para llantas")
     @GetMapping("/CatalogoLlantaAutenticado")
     public String catalogoLlanta(@RequestParam(required = false) String marca, Model model) {
         String categoria = "Llantas";
